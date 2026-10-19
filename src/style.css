@@ -92,3 +92,7 @@
 .app-content p.eyebrow{font-size:10px;line-height:1.5}
 @media(min-width:701px){.app-window{max-height:calc(100vh - max(12px, calc(50vh - 300px)) - 55px)}}
 .story:focus-visible{outline:2px solid #b27ba8;outline-offset:4px}
+/* The title bars remain draggable without decorative filename headings. */
+.welcome-window > .window-bar { justify-content: space-between; }
+.app-window > .window-bar { justify-content: space-between; }
+.welcome-inner { padding-top: 18px; }
