@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { readStored, writeStored, removeStored } from '../storage';
 
 type Place = 'Moon Garden' | 'Cloud Sea' | 'Star Forest';
 type Mood = 'Cozy' | 'Curious' | 'Sleepy';
@@ -11,7 +12,7 @@ const choices = {
   object: [{name:'Lantern', icon:'☼'}, {name:'Star', icon:'✦'}, {name:'Music Box', icon:'♫'}],
 } as const;
 function readDream(): Dream | null {
-  try { const value = JSON.parse(localStorage.getItem('dreamos-dream') || 'null'); return value && choices.location.some(x=>x.name===value.location) && choices.mood.some(x=>x.name===value.mood) && choices.object.some(x=>x.name===value.object) ? value : null; } catch { return null; }
+  try { const value = readStored<Dream | null>('dreamos-dream', null); return value && choices.location.some(x=>x.name===value.location) && choices.mood.some(x=>x.name===value.mood) && choices.object.some(x=>x.name===value.object) ? value : null; } catch { return null; }
 }
 const placeWords: Record<Place,string> = {
   'Moon Garden':'Silver flowers sway beneath a sleepy moon',
@@ -46,14 +47,15 @@ export function DreamBuilder({play, onContinue}: {play:(frequency?:number,durati
  const [draft,setDraft]=useState<Dream>(()=>readDream() || fallback);
  const [created,setCreated]=useState(()=>Boolean(readDream())); const [creation,setCreation]=useState(0);
  const previewRef=useRef<HTMLDivElement>(null);
+ const [storageWarning,setStorageWarning]=useState('');
  function choose<K extends keyof Dream>(key:K,value:Dream[K]) {setDraft(old=>({...old,[key]:value}));setCreated(false);play(520,.1)}
- function create(){setSaved({...draft});setCreated(true);setCreation(n=>n+1);try{localStorage.setItem('dreamos-dream',JSON.stringify(draft))}catch{}play(784,.4);if(window.innerWidth<=700)requestAnimationFrame(()=>previewRef.current?.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}))}
- function reset(){setDraft(fallback);setSaved(null);setCreated(false);try{localStorage.removeItem('dreamos-dream')}catch{}}
+ function create(){setSaved({...draft});setCreated(true);setCreation(n=>n+1);setStorageWarning(writeStored('dreamos-dream',draft)?'':'Your dream is here for now, but could not be saved on this device.');play(784,.4);if(window.innerWidth<=700)requestAnimationFrame(()=>previewRef.current?.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}))}
+ function reset(){setDraft(fallback);setSaved(null);setCreated(false);setStorageWarning(removeStored('dreamos-dream')?'':'Your previous dream could not be removed from this device.');}
  return <div className="dream-builder"><div className="builder-header"><div><h2>A dream, <em>made by you.</em></h2><p>Three little ingredients. One very big imagination.</p></div><span className="builder-stamp">✦<br/>DREAM<br/>DEPT.</span></div>
  <div className="builder-layout builder-new"><div className="choices">
   <fieldset><legend><span>01</span> PICK A PLACE</legend><div className="place-options">{choices.location.map(item=><button type="button" key={item.name} className={draft.location===item.name?'chosen':''} aria-pressed={draft.location===item.name} onClick={()=>choose('location',item.name)}><span className="choice-art">{item.icon}</span><span><b>{item.name}</b><small>{item.note}</small></span><i>✓</i></button>)}</div></fieldset>
   <fieldset><legend><span>02</span> SET THE FEELING</legend><div className="dream-pills">{choices.mood.map(item=><button type="button" key={item.name} className={draft.mood===item.name?'chosen':''} aria-pressed={draft.mood===item.name} onClick={()=>choose('mood',item.name)}><span>{item.icon}</span> {item.name}</button>)}</div></fieldset>
   <fieldset><legend><span>03</span> ADD A LITTLE MAGIC</legend><div className="dream-pills">{choices.object.map(item=><button type="button" key={item.name} className={draft.object===item.name?'chosen':''} aria-pressed={draft.object===item.name} onClick={()=>choose('object',item.name)}><span>{item.icon}</span> {item.name}</button>)}</div></fieldset>
-  <div className="button-row"><button className="primary create-button" onClick={create}>✦ &nbsp; {created?'Make it again':'Make my dream'} <span>→</span></button><button className="text-button" onClick={reset}>Start over ↺</button></div>
+  <p role="status" className="storage-warning">{storageWarning}</p><div className="button-row"><button className="primary create-button" onClick={create}>✦ &nbsp; {created?'Make it again':'Make my dream'} <span>→</span></button><button className="text-button" onClick={reset}>Start over ↺</button></div>
  </div><div className="dream-preview" ref={previewRef} aria-live="polite"><div className="preview-top"><span>✳ &nbsp; DREAM PREVIEW</span><span>{created?'READY TO DREAM': 'LIVE VIEW'} &nbsp; ●</span></div><DreamLandscape key={creation} dream={draft} completed={created}/><div className="dream-ticket"><span className="ticket-kicker">{created?'✦ MADE WITH STARDUST':saved?'✦ YOUR LAST DREAM IS SAVED':'✦ A LITTLE DREAM IN PROGRESS'}</span><h3>{created ? `${draft.mood} in the ${draft.location}` : 'A peek inside your dream'}</h3><p>{created?`${placeWords[draft.location]}. ${objectWords[draft.object]} ${moodWords[draft.mood]}`:'Pick your ingredients and watch this little world change. When it feels just right, make it yours.'}</p>{created&&<button className="ticket-link" onClick={onContinue}>Send a dream into the night →</button>}</div><div className="ticket-bottom"><span>MADE BY YOU & PIP</span><span>NO. {String(creation||1).padStart(3,'0')} &nbsp; ✧</span></div></div></div></div>;
 }

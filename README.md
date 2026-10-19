@@ -18,6 +18,10 @@ npm run build
 npm run preview
 ```
 
+## Browser checks
+
+Install dependencies with `npm install`, run `npm run dev`, then run `npm test` in another terminal. The suite uses Playwright and axe to check the dream and delivery flow, keyboard focus, blocked browser storage, mobile layout, and serious accessibility violations. By default it uses installed Chrome on macOS or Playwright Chromium elsewhere. Set `CHROME_PATH` to another Chrome executable, or install Playwright browsers with `npx playwright install chromium firefox webkit` and use `TEST_BROWSER=firefox npm test` or `TEST_BROWSER=webkit npm test`. `TEST_URL` can point the suite at a different local server.
+
 ## The little story behind the build
 
 I imagined Pip's workshop as a computer that fell asleep on a cloud and kept dreaming. The desktop borrows the odd warmth of early personal websites: homemade shortcuts, little status messages, a counter, and a secret worth finding. The projects are Pip's actual tools: a music box that plays synthesized lullabies, a lantern collection, and a delivery map that sends dreams to the nursery. The dream builder lets visitors combine a place, feeling, and magical object in a live illustrated scene, then send their saved dream through the delivery map. Pip reacts to a greeting and to the day and night switch.
@@ -57,4 +61,5 @@ Then import the repository in Vercel, deploy, and submit the public URL, public 
 - Guestbook and counter are browser-local, not shared across visitors or devices.
 - Google Fonts require a network connection; system font fallbacks are provided. Artwork is bundled locally.
 - This is a static app: no server-side storage, login, or live guestbook.
-- Performance scores have not been measured with Lighthouse.
+- Lighthouse measurements vary by device, network, and hosting. Check the deployed site and real devices before a broad launch.
+- Automated accessibility checks do not replace manual keyboard and screen-reader testing.

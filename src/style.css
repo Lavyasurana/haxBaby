@@ -96,3 +96,10 @@
 .welcome-window > .window-bar { justify-content: space-between; }
 .app-window > .window-bar { justify-content: space-between; }
 .welcome-inner { padding-top: 18px; }
+
+/* Contrast adjustments for small text and controls. */
+.quote,.hero-invitation small,.welcome-bottom small,.counter,.explore-cards i,.builder-stamp,.place-options small,.text-button,.ticket-link,.dream-ticket .ticket-kicker,.dream-ticket p,.ticket-bottom,.preview-top,.preview-top span:last-child { color:#604863!important; }
+.builder-new legend span { color:#604863!important; }
+.primary { color:#30213d; }
+.storage-warning { color:#6b3150!important; font-size:12px; }
+.storage-warning:empty { display:none; }
