@@ -20,13 +20,13 @@ npm run preview
 
 ## The little story behind the build
 
-I imagined Pip's workshop as a computer that fell asleep on a cloud and kept dreaming. The desktop borrows the odd warmth of early personal websites: homemade shortcuts, little status messages, a counter, and a secret worth finding. The projects are Pip's actual tools: a music box that plays synthesized lullabies, a lantern collection, and a delivery map that sends dreams to the nursery. The dream builder lets the visitor make something with Pip rather than just read about them.
+I imagined Pip's workshop as a computer that fell asleep on a cloud and kept dreaming. The desktop borrows the odd warmth of early personal websites: homemade shortcuts, little status messages, a counter, and a secret worth finding. The projects are Pip's actual tools: a music box that plays synthesized lullabies, a lantern collection, and a delivery map that sends dreams to the nursery. The dream builder lets visitors combine a place, feeling, and magical object in a live illustrated scene, then send their saved dream through the delivery map. Pip reacts to a greeting and to the day and night switch.
 
 ## Feature and judging checklist
 
 - **Functionality and polish:** responsive windowed desktop; click, close, stack and drag windows on desktop; mobile panels; local clock; audio controls; local persistence.
 - **Early-web soul:** boot sequence, start menu, shortcuts, taskbar, cursor sparkles, little sound effects and a local dreams-delivered odometer.
-- **Creativity and surprises:** deterministic dream builder, three interactive showcase projects, four illustrated storybook chapters, reactive Pip and a hidden room.
+- **Creativity and surprises:** deterministic dream builder with live scenes and a saved dream, three interactive showcase projects, four illustrated storybook chapters with keyboard and touch navigation, reactive Pip and a hidden room.
 - **Clean craft:** React, TypeScript, Vite, CSS tokens, Motion, semantic controls, keyboard-operable buttons, reduced-motion CSS, and local assets. No paid API or credentials required.
 
 ### Bonus features, honestly described
