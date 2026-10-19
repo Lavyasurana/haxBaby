@@ -44,10 +44,10 @@ Sparkle trail, UI sounds with mute, a **local** delivery counter, and responsive
 For Vercel, import a public GitHub repository containing this project. Vercel should detect Vite; use `npm run build` and `dist` as the output directory. Or from a terminal with GitHub CLI authenticated:
 
 ```sh
-git init
+gh auth login -h github.com
 git add .
-git commit -m "Build Pip's DreamOS"
-gh repo create pips-dreamos --public --source=. --remote=origin --push
+git commit -m "Prepare Pip's DreamOS for submission" # only if there are uncommitted changes
+gh repo create pips-dreamos --public --source=. --remote=github --push
 ```
 
 Then import the repository in Vercel, deploy, and submit the public URL, public repository URL, credits, and build story through the hackathon portal. **Do not backdate commits.** The official brief requires public commit history during the sprint and submission by 19 October 2026 at 17:17 IST; confirm eligibility and deadline before submitting.
